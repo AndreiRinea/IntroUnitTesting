@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using introUnitTesting.Models;
 using introUnitTesting.Services;
@@ -11,6 +8,13 @@ namespace introUnitTesting.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ICalculator _calculator;
+
+        public HomeController(ICalculator calculator)
+        {
+            _calculator = calculator ?? throw new ArgumentNullException(nameof(calculator));
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -40,8 +44,7 @@ namespace introUnitTesting.Controllers
         [HttpPost]
         public IActionResult Math(MathOperation model)
         {
-            var calc = new Calculator();
-            var result = calc.Calculate(model.Operand1, model.Operand2, model.Operation);
+            var result = _calculator.Calculate(model.Operand1, model.Operand2, model.Operation);
             model.Result = result;
             return View(model);
         }

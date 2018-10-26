@@ -1,0 +1,40 @@
+﻿@model MathOperation
+@{
+    ViewData["Title"] = "Math";
+}
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+
+@using (Html.BeginForm(FormMethod.Post))
+{
+    @Html.EditorFor(m => m.Operand1)
+    <br/>
+    foreach (OperationType type in Enum.GetValues(typeof(OperationType)))
+    {
+        @Html.RadioButton(nameof(MathOperation.Operation), type, type == Model.Operation)
+        switch (type)
+        {
+            case OperationType.Add:
+                <label>+</label>
+                break;
+            case OperationType.Subtract:
+                <label>-</label>
+                break;
+            case OperationType.Multiply:
+                <label>*</label>
+                break;
+            case OperationType.Divide:
+                <label>/</label>
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+        <br/>
+    }
+    <br/>
+    @Html.EditorFor(m => m.Operand2)
+    <br/>
+    <input type="submit" value="Calculate"/>
+    <br/>
+    <span>Result : @Model.Result</span>
+}

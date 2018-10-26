@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using introUnitTesting.Models;
+using introUnitTesting.Services;
 
 namespace introUnitTesting.Controllers
 {
@@ -27,6 +28,22 @@ namespace introUnitTesting.Controllers
             ViewData["Message"] = "Your contact page.";
 
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult Math()
+        {
+            var model = new MathOperation();
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Math(MathOperation model)
+        {
+            var calc = new Calculator();
+            var result = calc.Calculate(model.Operand1, model.Operand2, model.Operation);
+            model.Result = result;
+            return View(model);
         }
 
         public IActionResult Privacy()
